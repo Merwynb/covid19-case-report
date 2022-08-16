@@ -29,14 +29,15 @@ def get_new_cases():
 
 def validate_data(new_cases):
     """
-    Checks to confirm user enters an Integer.
+    Checks to confirm user enters an Integer 
+    and will keep asking until user enters a valid input.
     """
     try:
         user_num = int(new_cases)
         return user_num
     except ValueError:
-        print("Please enter a numerical value.")
-        return None
+        print("Please enter a numerical value.\n")
+        return get_new_cases()
 
 
 get_new_cases()
