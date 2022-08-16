@@ -12,19 +12,31 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('covid19-case-report')
 
+
 def get_new_cases():
     """
     Get New cases data from user.
     """
-    while True:
-        print("Please enter total number of New cases")
-        print("Value should be in numerical format. Example: 33")
-        print("Data should be entered ONLY at the end of day i.e. at 22:00\n")
+    print("Please enter total number of New cases")
+    print("Value should be in numerical format. Example: 33")
+    print("Data should be entered ONLY at the end of day i.e. at 22:00\n")
 
-        data_str = input("Enter your data here:")
+    new_cases = input("Enter your data here: ")
+    print(f"data entered is {new_cases} ")
 
-        print(f"data entered is {data_str} ")
+    validate_data(new_cases)
+
+
+def validate_data(new_cases):
+    """
+    Checks to confirm user enters an Integer.
+    """
+    try:
+        user_num = int(new_cases)
+        return user_num
+    except ValueError:
+        print("Please enter a numerical value.")
+        return None
+
 
 get_new_cases()
-
-
