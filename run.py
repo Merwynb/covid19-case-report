@@ -69,7 +69,13 @@ def calculate_total_cases(new_cases):
     print("Calculating Total Active Cases...\n")
     total = SHEET.worksheet("total").get_all_values()
     total_row = total[-1]
-    print(total_row)
+    
+    total_data = []
+    for total, new_cases in zip(total_row, new_cases):
+        total = int(total) + new_cases
+        total_data.append(total)
+
+    return total_data    
 
 
 def main():
@@ -79,7 +85,7 @@ def main():
     data = get_new_cases()
     new_cases_data = [int(num) for num in data]
     update_daily_worksheet(new_cases_data)
-    calculate_total_cases(new_cases_data)
-
+    new_total_cases = calculate_total_cases(new_cases_data)
+    print(new_total_cases)
 
 main()
