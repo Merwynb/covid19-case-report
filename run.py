@@ -1,5 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
+from pprint import pprint
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -24,13 +25,13 @@ def get_new_cases():
 
         data_str = input("Enter New Cases: ")
 
-        new_cases_data = data_str.split(" ")
-        
+        new_cases_data = data_str.split(",")
+                
         if validate_data(new_cases_data):
             print("Thank You for your input.\n")
             break
 
-    return new_cases_data    
+    return new_cases_data 
 
 
 def validate_data(values):
@@ -41,7 +42,7 @@ def validate_data(values):
     """
     try:
         [int(value) for value in values]
-        if len(values) > 1:
+        if len(values) != 3:
             raise ValueError()
     except ValueError:
         print("Invalid input. Please enter a numerical value.\n")
@@ -50,16 +51,35 @@ def validate_data(values):
     return True    
 
 
-def update_new_cases_column(new_cases):
+def update_daily_worksheet(data):
     """
     Updates the daily worksheet and adds a new row with the data.
     """
     print("Updating Daily worksheet...\n")
-    new_cases_column = SHEET.worksheet("daily")
-    new_cases_column.append_row(new_cases)
+    daily_worksheet = SHEET.worksheet("daily")
+    daily_worksheet.append_row(data)
     print("Daily worksheet updated successfully.\n")
 
 
-data = get_new_cases()
-new_cases_data = [int(num) for num in data]
-update_new_cases_column(new_cases_data)
+def calculate_total_cases(new_cases):
+    """
+    Calculates the Total number of Active cases by subtracting
+    data from Recovered cases and Deaths from New cases.
+    """
+    print("Calculating Total Active Cases...\n")
+    total = SHEET.worksheet("total").get_all_values()
+    total_row = total[-1]
+    print(total_row)
+
+
+def main():
+    """
+    Run all functions.
+    """
+    data = get_new_cases()
+    new_cases_data = [int(num) for num in data]
+    update_daily_worksheet(new_cases_data)
+    calculate_total_cases(new_cases_data)
+
+
+main()
