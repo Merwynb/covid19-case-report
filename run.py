@@ -1,6 +1,5 @@
 import gspread
 from google.oauth2.service_account import Credentials
-from pprint import pprint
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -23,7 +22,7 @@ def get_new_cases():
         print("Value should be in numerical format. Example: 33")
         print("Data should be entered ONLY at the end of day i.e. at 22:00\n")
 
-        data_str = input("Enter New Cases: ")
+        data_str = input("Enter New Cases: \n")
 
         new_cases_data = data_str.split(",")
                 
@@ -88,19 +87,6 @@ def calculate_total_cases(new_cases):
     return total_data    
 
 
-def get_percentage():
-    """
-    Get the percentage of total Active cases.
-    """
-    total = SHEET.worksheet("total")
-    columns = []
-    for num in range(1, 4):
-        column = total.col_values(num)
-        columns.append(column)
-
-    return columns
-
-
 def main():
     """
     Run all functions.
@@ -112,7 +98,7 @@ def main():
     update_total_worksheet(new_total_cases)
 
 
-# main()
+main()
 
 
-total_columns = get_percentage()
+
