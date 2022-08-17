@@ -61,6 +61,16 @@ def update_daily_worksheet(data):
     print("Daily worksheet updated successfully.\n")
 
 
+def update_total_worksheet(data):
+    """
+    Updates the Total worksheet and adds a new row with the data.
+    """
+    print("Updating Total worksheet...\n")
+    total_worksheet = SHEET.worksheet("total")
+    total_worksheet.append_row(data)
+    print("Total worksheet updated successfully.\n")
+
+
 def calculate_total_cases(new_cases):
     """
     Calculates the Total number of Active cases by subtracting
@@ -78,6 +88,19 @@ def calculate_total_cases(new_cases):
     return total_data    
 
 
+def get_percentage():
+    """
+    Get the percentage of total Active cases.
+    """
+    total = SHEET.worksheet("total")
+    columns = []
+    for num in range(1, 4):
+        column = total.col_values(num)
+        columns.append(column)
+
+    return columns
+
+
 def main():
     """
     Run all functions.
@@ -86,6 +109,10 @@ def main():
     new_cases_data = [int(num) for num in data]
     update_daily_worksheet(new_cases_data)
     new_total_cases = calculate_total_cases(new_cases_data)
-    print(new_total_cases)
+    update_total_worksheet(new_total_cases)
 
-main()
+
+# main()
+
+
+total_columns = get_percentage()
